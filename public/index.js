@@ -9,10 +9,8 @@ for (x = 0; x < canvas.width; x++) {
   }
 }
 
-let currentX = canvas.width / 2;
-let currentY = canvas.height / 2;
-paintAtCurrent(graphics);
-[currentX, currentY] = randomOpenPosition(graphics, canvas.width, canvas.height);
+paintParticle(graphics, canvas.width / 2, canvas.height / 2); // seed at center
+let [currentX, currentY] = randomOpenPosition(graphics, canvas.width, canvas.height);
 animLoop(graphics, crystalize);
 
 function crystalize(graphics) {
@@ -30,7 +28,7 @@ function crystalize(graphics) {
 function wander(graphics) {
   paintCanvasWithPixelAt(graphics, currentX, currentY, {});
   [currentX, currentY] = randomNeighbor(currentX, currentY, canvas.width, canvas.height);
-  paintAtCurrent(graphics);
+  paintParticle(graphics, currentX, currentY);
 }
 
 function randomOpenPosition(graphics, width, height) {
@@ -44,8 +42,8 @@ function randomOpenPosition(graphics, width, height) {
   return null;
 }
 
-function paintAtCurrent(graphics) {
-  paintCanvasWithPixelAt(graphics, currentX, currentY, {red: 255});
+function paintParticle(graphics, x, y) {
+  paintCanvasWithPixelAt(graphics, x, y, {red: 255});
 }
 
 function nearParticle(graphics, x, y, width, height) {
