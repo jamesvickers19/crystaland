@@ -47,12 +47,7 @@ function paintParticle(graphics, x, y) {
 }
 
 function nearParticle(graphics, x, y, width, height) {
-  for (const [neighborX, neighborY] of neighbors(x, y, width, height)) {
-    if (isParticle(graphics, neighborX, neighborY)) {
-      return true;
-    }
-  }
-  return false;
+  return neighbors(x, y, width, height).some(n => isParticle(graphics, n[0], n[1]));
 }
 
 function isParticle(graphics, x, y) {
