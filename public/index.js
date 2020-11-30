@@ -27,7 +27,7 @@ function crystalize(graphics) {
 
 function wander(graphics) {
   paintCanvasWithPixelAt(graphics, currentX, currentY, {});
-  [currentX, currentY] = randomNeighbor(currentX, currentY, canvas.width, canvas.height);
+  [currentX, currentY] = randomCardinalNeighbor(currentX, currentY, canvas.width, canvas.height);
   paintParticle(graphics, currentX, currentY);
 }
 
@@ -47,20 +47,28 @@ function paintParticle(graphics, x, y) {
 }
 
 function nearParticle(graphics, x, y, width, height) {
-  return neighbors(x, y, width, height).some(n => isParticle(graphics, n[0], n[1]));
+  return squareNeighbors(x, y, width, height).some(n => isParticle(graphics, n[0], n[1]));
 }
 
 function isParticle(graphics, x, y) {
   return getPixelAt(graphics, x, y).data.slice(0, 3).some(p => p > 0);
 }
 
-function neighbors(x, y, width, height) {
-  let neighbors = [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]];
+function squareNeighbors(x, y, width, height) {
+  return cardinalNeighbors(x, y, width, height)
+    .concat(validNeighbors([[x + 1, y + 1], [x - 1, y - 1]], width, height));
+}
+
+function cardinalNeighbors(x, y, width, height) {
+  return validNeighbors([[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]], width, height);
+}
+
+function validNeighbors(neighbors, width, height) {
   return neighbors.filter(n => inBox(n, width, height));
 }
 
-function randomNeighbor(x, y, width, height) {
-  return randomElement(neighbors(x, y, width, height));
+function randomCardinalNeighbor(x, y, width, height) {
+  return randomElement(cardinalNeighbors(x, y, width, height));
 }
 
 function inBox(coords, width, height) {
