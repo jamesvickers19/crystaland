@@ -92,28 +92,11 @@ function getPixelAt(graphics, x, y) {
 
 function paintCanvasWithPixelAt(graphics, x, y, pixelData) {
   let curImgData = getPixelAt(graphics, x, y);
-  const {red = 0, green = 0, blue = 0, alpha = 255} = pixelData;
-  curImgData.data[0] = red;
-  curImgData.data[1] = green;
-  curImgData.data[2] = blue;
-  curImgData.data[3] = alpha;
+  curImgData.data[0] = pixelData.red || 0;
+  curImgData.data[1] = pixelData.green || 0;
+  curImgData.data[2] = pixelData.blue || 0;
+  curImgData.data[3] = pixelData.alpha || 255;
   graphics.putImageData(curImgData, x, y);
-}
-
-function paintCanvasWithPixels(ctx, pixelData) {
-  const width = ctx.canvas.width;
-  const height = ctx.canvas.height;
-  ctx.clearRect(0, 0, width, height);
-  var newImageData = ctx.createImageData(width, height);
-  let i = 0;
-  for (const {red = 0, green = 0, blue = 0, alpha = 255} of pixelData) {
-    newImageData.data[i] = red;
-    newImageData.data[i + 1] = green;
-    newImageData.data[i + 2] = blue;
-    newImageData.data[i + 3] = alpha;
-    i += 4; 
-  }
-  ctx.putImageData(newImageData, 0, 0);
 }
 
 function randomInteger(min, max) {
